@@ -79,7 +79,7 @@ class _WeaponPanelState extends State<WeaponPanel> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(widget.title, style: Theme.of(context).textTheme.titleLarge),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           TextField(
             controller: _controller,
             keyboardType: TextInputType.number,
@@ -93,11 +93,20 @@ class _WeaponPanelState extends State<WeaponPanel> {
             onChanged: _onChanged,
           ),
           const SizedBox(height: 8),
-          Text('Заряды: ${charges ?? '—'}'),
+          Text('Заряды: ${getChargesCountText(charges)}'),
           const SizedBox(height: 8),
           Text('Возвышение: ${elevation?.toStringAsFixed(2) ?? '—'}'),
         ],
       ),
     );
   }
+
+  String getChargesCountText(int? count) => switch (count) {
+    null => '—',
+    > 5 => '█ x $count',
+    _ => List.filled(count, '█').join(' '),
+  };
+
+  String getElevationValueText(double? value) =>
+      value?.toStringAsFixed(2) ?? '—';
 }
