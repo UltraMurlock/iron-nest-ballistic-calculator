@@ -37,6 +37,7 @@ class MainPage extends StatelessWidget {
               key: Key('left'),
               child: WeaponPanel(title: 'Левое орудие'),
             ),
+            const Divider(height: 1, thickness: 1),
             Expanded(
               key: Key('right'),
               child: WeaponPanel(title: 'Правое орудие'),
@@ -113,13 +114,21 @@ class _WeaponPanelState extends State<WeaponPanel> {
             decoration: const InputDecoration(
               labelText: 'Расстояние',
               border: OutlineInputBorder(),
+              suffixText: 'км',
             ),
             onChanged: _onDistanceTextChanged,
           ),
-          const SizedBox(height: 8),
-          Text('Заряды: ${getChargesCountText(charges)}'),
-          const SizedBox(height: 8),
-          Text('Возвышение: ${elevation?.toStringAsFixed(2) ?? '—'}'),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(child: Text('Заряды: ${getChargesCountText(charges)}')),
+              Expanded(
+                child: Text(
+                  'Возвышение: ${elevation?.toStringAsFixed(2) ?? '—'}',
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
