@@ -75,6 +75,12 @@ class _WeaponPanelState extends State<WeaponPanel> {
     setState(() => _distance = double.tryParse(text));
   }
 
+  void _onDataClear() {
+    _distanceTextController.clear();
+    _azimuthTextController.clear();
+    setState(() => _distance = null);
+  }
+
   @override
   Widget build(BuildContext context) {
     int? charges;
@@ -91,40 +97,67 @@ class _WeaponPanelState extends State<WeaponPanel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.title, style: Theme.of(context).textTheme.titleLarge),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _azimuthTextController,
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,1}')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(widget.title, style: Theme.of(context).textTheme.titleLarge),
+              IconButton.outlined(
+                onPressed: _onDataClear,
+                icon: const Icon(Icons.restart_alt),
+              ),
             ],
-            decoration: const InputDecoration(
-              labelText: 'Азимут',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 8),
-          TextField(
-            controller: _distanceTextController,
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
-            ],
-            decoration: const InputDecoration(
-              labelText: 'Расстояние',
-              border: OutlineInputBorder(),
-              suffixText: 'км',
-            ),
-            onChanged: _onDistanceTextChanged,
           ),
           const SizedBox(height: 12),
           Row(
             children: [
-              Expanded(child: Text('Заряды: ${getChargesCountText(charges)}')),
+              Expanded(
+                child: TextField(
+                  controller: _azimuthTextController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'^\d*\.?\d{0,1}'),
+                    ),
+                  ],
+                  decoration: const InputDecoration(
+                    labelText: 'Азимут',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: TextField(
+                  controller: _distanceTextController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'^\d*\.?\d{0,2}'),
+                    ),
+                  ],
+                  decoration: const InputDecoration(
+                    labelText: 'Расстояние',
+                    border: OutlineInputBorder(),
+                    suffixText: 'км',
+                  ),
+                  onChanged: _onDistanceTextChanged,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Заряды: ${getChargesCountText(charges)}',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
               Expanded(
                 child: Text(
                   'Возвышение: ${elevation?.toStringAsFixed(2) ?? '—'}',
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
             ],
