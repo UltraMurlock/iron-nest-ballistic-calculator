@@ -97,7 +97,7 @@ class _WeaponPanelState extends State<WeaponPanel> {
             controller: _azimuthTextController,
             keyboardType: TextInputType.number,
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,1}')),
             ],
             decoration: const InputDecoration(
               labelText: 'Азимут',
