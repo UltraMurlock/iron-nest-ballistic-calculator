@@ -58,17 +58,19 @@ class WeaponPanel extends StatefulWidget {
 }
 
 class _WeaponPanelState extends State<WeaponPanel> {
-  final _controller = TextEditingController();
+  final _distanceTextController = TextEditingController();
+  final _azimuthTextController = TextEditingController();
 
   double? _distance;
 
   @override
   void dispose() {
-    _controller.dispose();
+    _distanceTextController.dispose();
+    _azimuthTextController.dispose();
     super.dispose();
   }
 
-  void _onChanged(String text) {
+  void _onDistanceTextChanged(String text) {
     setState(() => _distance = double.tryParse(text));
   }
 
@@ -91,7 +93,19 @@ class _WeaponPanelState extends State<WeaponPanel> {
           Text(widget.title, style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 12),
           TextField(
-            controller: _controller,
+            controller: _azimuthTextController,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+            ],
+            decoration: const InputDecoration(
+              labelText: 'Азимут',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 8),
+          TextField(
+            controller: _distanceTextController,
             keyboardType: TextInputType.number,
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
@@ -100,7 +114,7 @@ class _WeaponPanelState extends State<WeaponPanel> {
               labelText: 'Расстояние',
               border: OutlineInputBorder(),
             ),
-            onChanged: _onChanged,
+            onChanged: _onDistanceTextChanged,
           ),
           const SizedBox(height: 8),
           Text('Заряды: ${getChargesCountText(charges)}'),
